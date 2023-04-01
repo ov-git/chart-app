@@ -1,11 +1,10 @@
-import { useState } from "react";
+import ChartBox from "./components/ChartBox";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="">
-      <h1 className="text-6xl text-orange-700">Hello</h1>
+    <div className="flex flex-col items-center justify-center w-full h-screen gap-5 bg-blue-900">
+      <h1 className="text-6xl text-red-500">Chart App</h1>
+      <ChartBox symbol={"AAPL"} />
     </div>
   );
 }
