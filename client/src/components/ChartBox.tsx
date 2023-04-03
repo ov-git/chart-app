@@ -1,12 +1,14 @@
-import { useQuery } from "react-query";
+import { useQuery } from 'react-query';
 
-import Chart from "./Chart";
+import Chart from './Chart';
 
-import type { StockData } from "../lib/types";
+import type { StockData } from '../lib/types';
 
 // data fetcher
 const fetchStockData = async (symbol: string): Promise<StockData> => {
-  const response = await fetch(`http://localhost:4000?symbol=${symbol}`);
+  const response = await fetch(
+    `https://chart-app.onrender.com/api?symbol=${symbol}`
+  );
 
   if (response.ok) {
     const data = await response.json();
@@ -24,7 +26,7 @@ const ChartBox = ({ symbol }: Props) => {
     data: stockData,
     isError,
     isLoading,
-  } = useQuery<StockData>(["stock-data", symbol], () => fetchStockData(symbol));
+  } = useQuery<StockData>(['stock-data', symbol], () => fetchStockData(symbol));
 
   if (isLoading) return <h1>Loading...</h1>;
   if (isError || !stockData) {

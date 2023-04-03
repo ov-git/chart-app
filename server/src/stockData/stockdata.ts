@@ -1,6 +1,8 @@
 import https from "https";
 import { Request, Response } from "express";
 
+import type { StockData, TimeSerie } from "../lib/types";
+
 export const getStockData = async (req: Request, res: Response) => {
   try {
     const { symbol } = req.query;
@@ -8,8 +10,6 @@ export const getStockData = async (req: Request, res: Response) => {
       method: "GET",
       hostname: "www.alphavantage.co",
       path: `/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${process.env.API_KEY}`,
-      // path: `/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=AAPL&apikey=${process.env.API_KEY}`,
-      // path: `/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=${process.env.API_KEY}`,
     };
     const httpReq = https.request(options, function (httpRes) {
       httpRes.setEncoding("utf8");
@@ -39,23 +39,6 @@ export const getStockData = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ success: false, error: "Something went wrong" });
   }
-};
-
-type StockData = {
-  success: boolean;
-  error?: string;
-  data?: {
-    symbol: string;
-    timeSeries: TimeSerie[];
-  };
-};
-
-type TimeSerie = {
-  date: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
 };
 
 function createResponse(data: string): StockData {

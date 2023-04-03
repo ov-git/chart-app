@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import Highcharts, { Options } from "highcharts/highstock";
-import HighchartsReact from "highcharts-react-official";
+import Highcharts, { Options } from 'highcharts/highstock';
+import HighchartsReact from 'highcharts-react-official';
 
-import type { StockData, TimeSerie } from "../lib/types";
+import type { StockData, TimeSerie } from '../lib/types';
 
 // Parses data for HighCharts
 const parseTimeSeries = (timeSeriesData: TimeSerie[]): number[][] => {
@@ -18,8 +18,8 @@ type Props = {
 
 const Chart = ({ data }: Props) => {
   const [chartType, setChartType] = useState<
-    "candlestick" | "line" | "area" | "spline"
-  >("line");
+    'candlestick' | 'line' | 'area' | 'spline'
+  >('line');
   const title = data.symbol;
   const graphData = parseTimeSeries(data.timeSeries);
 
@@ -27,36 +27,36 @@ const Chart = ({ data }: Props) => {
     rangeSelector: {
       buttons: [
         {
-          type: "month",
+          type: 'month',
           count: 1,
-          text: "1M",
+          text: '1M',
         },
         {
-          type: "month",
+          type: 'month',
           count: 3,
-          text: "3M",
+          text: '3M',
         },
         {
-          type: "all",
+          type: 'all',
           count: 1,
-          text: "All",
+          text: 'All',
         },
       ],
       buttonTheme: {
-        fill: "gray", // set the background color of the buttons
-        stroke: "gray", // set the border color of the buttons
-        "stroke-width": 1, // set the border width of the buttons
+        fill: 'gray', // set the background color of the buttons
+        stroke: 'gray', // set the border color of the buttons
+        'stroke-width': 1, // set the border width of the buttons
         style: {
-          color: "white", // set the font color of the buttons
+          color: 'white', // set the font color of the buttons
         },
         states: {
           hover: {
-            fill: "lightgray", // set the background color of the buttons when hovered
-            stroke: "lightgray", // set the border color of the buttons when hovered
+            fill: 'lightgray', // set the background color of the buttons when hovered
+            stroke: 'lightgray', // set the border color of the buttons when hovered
           },
           select: {
-            fill: "darkgray", // set the background color of the selected button
-            stroke: "darkgray", // set the border color of the selected button
+            fill: 'darkgray', // set the background color of the selected button
+            stroke: 'darkgray', // set the border color of the selected button
           },
         },
       },
@@ -72,12 +72,12 @@ const Chart = ({ data }: Props) => {
         type: chartType,
         name: `${data.symbol} Stock Price`,
         data: graphData,
-        upColor: "green",
-        upLineColor: "green",
+        upColor: 'green',
+        upLineColor: 'green',
         dataGrouping: {
           units: [
-            ["week", [1]],
-            ["month", [1]],
+            ['week', [1]],
+            ['month', [1]],
           ],
         },
       },
@@ -88,7 +88,7 @@ const Chart = ({ data }: Props) => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setChartType(
-      event.target.value as "candlestick" | "line" | "area" | "spline"
+      event.target.value as 'candlestick' | 'line' | 'area' | 'spline'
     );
   };
 
@@ -111,7 +111,7 @@ const Chart = ({ data }: Props) => {
       </div>
       <HighchartsReact
         highcharts={Highcharts}
-        constructorType={"stockChart"}
+        constructorType={'stockChart'}
         options={chartOptions}
       />
     </div>
