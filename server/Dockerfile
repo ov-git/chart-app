@@ -22,3 +22,5 @@ COPY --from=development /usr/src/app/dist ./dist
 
 CMD ["node", "dist/index.js"]
 
+EXPOSE 4000
+

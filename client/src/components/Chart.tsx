@@ -1,8 +1,11 @@
+import { useState } from "react";
+
 import Highcharts, { Options } from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
-import { StockData, TimeSerie } from "../lib/types";
 
-// Parses time data for HighCharts
+import type { StockData, TimeSerie } from "../lib/types";
+
+// Parses data for HighCharts
 const parseTimeSeries = (timeSeriesData: TimeSerie[]): number[][] => {
   return timeSeriesData.map((timeSerieData) => {
     return Object.values(timeSerieData);
@@ -14,6 +17,9 @@ type Props = {
 };
 
 const Chart = ({ data }: Props) => {
+  const [chartType, setChartType] = useState<
+    "candlestick" | "line" | "area" | "spline"
+  >("line");
   const title = data.symbol;
   const graphData = parseTimeSeries(data.timeSeries);
 
@@ -36,6 +42,24 @@ const Chart = ({ data }: Props) => {
           text: "All",
         },
       ],
+      buttonTheme: {
+        fill: "gray", // set the background color of the buttons
+        stroke: "gray", // set the border color of the buttons
+        "stroke-width": 1, // set the border width of the buttons
+        style: {
+          color: "white", // set the font color of the buttons
+        },
+        states: {
+          hover: {
+            fill: "lightgray", // set the background color of the buttons when hovered
+            stroke: "lightgray", // set the border color of the buttons when hovered
+          },
+          select: {
+            fill: "darkgray", // set the background color of the selected button
+            stroke: "darkgray", // set the border color of the selected button
+          },
+        },
+      },
       selected: 2,
     },
 
@@ -45,9 +69,11 @@ const Chart = ({ data }: Props) => {
 
     series: [
       {
-        type: "candlestick",
+        type: chartType,
         name: `${data.symbol} Stock Price`,
         data: graphData,
+        upColor: "green",
+        upLineColor: "green",
         dataGrouping: {
           units: [
             ["week", [1]],
@@ -58,12 +84,37 @@ const Chart = ({ data }: Props) => {
     ],
   };
 
+  const handleChartTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setChartType(
+      event.target.value as "candlestick" | "line" | "area" | "spline"
+    );
+  };
+
   return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      constructorType={"stockChart"}
-      options={chartOptions}
-    />
+    <div>
+      <div>
+        <label className="px-4 text-white" htmlFor="chart-type">
+          Chart Type:
+        </label>
+        <select
+          id="chart-type"
+          value={chartType}
+          onChange={handleChartTypeChange}
+        >
+          <option value="line">Line</option>
+          <option value="candlestick">Candlestick</option>
+          <option value="area">Area</option>
+          <option value="spline">Spline</option>
+        </select>
+      </div>
+      <HighchartsReact
+        highcharts={Highcharts}
+        constructorType={"stockChart"}
+        options={chartOptions}
+      />
+    </div>
   );
 };
 

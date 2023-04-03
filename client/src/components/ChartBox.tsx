@@ -1,6 +1,8 @@
 import { useQuery } from "react-query";
+
 import Chart from "./Chart";
-import { StockData } from "../lib/types";
+
+import type { StockData } from "../lib/types";
 
 // data fetcher
 const fetchStockData = async (symbol: string): Promise<StockData> => {

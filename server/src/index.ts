@@ -8,7 +8,11 @@ const app = express();
 
 app.use(cors());
 
-app.get("/", getStockData);
+app.get("/api", getStockData);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to chart-app api");
+});
 
 app.listen(4000, () => {
   console.log("server running on port 4000");
